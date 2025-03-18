@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stuck in Carpet - Image Grid</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(64, 1fr); /* Auto-updated based on JSON */
+            grid-gap: 5px;
+            padding: 20px;
+            justify-content: center;
+            width: 90vw;
+            margin: auto;
+            position: relative;
+        }
+        .grid-image {
+            position: absolute;
+            width: 100%;
+            height: auto;
+            z-index: -1;
+            opacity: 0.5;
+        }
+        .grid-item {
+            cursor: pointer;
+            transition: transform 0.2s;
+            width: 100%;
+        }
+        .grid-item:hover {
+            transform: scale(1.1);
+        }
+        .grid-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+        }
+        .fullscreen img {
+            max-width: 90%;
+            max-height: 90%;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Image Grid from Stuck in Carpet</h1>
+
+<!-- Background Grid Image -->
+<img src="64_UMAP_PY.png" class="grid-image">
+
+<div id="gallery" class="grid-container"></div>
+
+<div id="fullscreen-view" class="fullscreen" style="display: none;">
+    <img id="fullscreen-img" src="">
+</div>
+
+<script>
+    const repoUrl = "https://cathleenZzzz.github.io/stuckincarpet/images/";
+
+    // Fetch JSON file to get grid positions
+    fetch("https://cathleenZzzz.github.io/stuckincarpet/64_UMAP_PY.json")
+        .then(response => response.json())
+        .then(data => {
+            const gallery = document.getElementById("gallery");
+            const fullscreenView = document.getElementById("fullscreen-view");
+            const fullscreenImg = document.getElementById("fullscreen-img");
+
+            // Extract grid size from JSON
+            const nx = data.grid_size.nx;  // Number of columns
+            const ny = data.grid_size.ny;  // Number of rows
+
+            // Update CSS grid layout dynamically
+            gallery.style.gridTemplateColumns = `repeat(${nx}, 1fr)`;
+
+            // Loop through image positions and create grid items
+            for (const [filename, position] of Object.entries(data.positions)) {
+                const imgElement = document.createElement("img");
+                imgElement.src = repoUrl + filename;
+                imgElement.alt = filename;
+
+                const div = document.createElement("div");
+                div.classList.add("grid-item");
+                div.style.gridColumnStart = position.col + 1;
+                div.style.gridRowStart = position.row + 1;
+                div.appendChild(imgElement);
+
+                // Click event to open image in fullscreen
+                div.addEventListener("click", () => {
+                    fullscreenImg.src = repoUrl + filename;
+                    fullscreenView.style.display = "flex";
+                });
+
+                gallery.appendChild(div);
+            }
+
+            // Click event to close fullscreen
+            fullscreenView.addEventListener("click", () => {
+                fullscreenView.style.display = "none";
+            });
+        })
+        .catch(error => console.error("Error loading 64_UMAP_PY.json:", error));
+</script>
+
+</body>
+</html>
