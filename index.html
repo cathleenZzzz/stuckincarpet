@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Image Grid</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 5px;
+            padding: 20px;
+        }
+        .grid-item {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .grid-item:hover {
+            transform: scale(1.1);
+        }
+        .grid-item img {
+            width: 100%;
+            border-radius: 5px;
+        }
+        .fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+        }
+        .fullscreen img {
+            max-width: 90%;
+            max-height: 90%;
+        }
+    </style>
+</head>
+<body>
+
+<div id="gallery" class="grid-container"></div>
+
+<div id="fullscreen-view" class="fullscreen" style="display: none;">
+    <img id="fullscreen-img" src="">
+</div>
+
+<script>
+    // List of image URLs (Use hosted images instead of local files)
+    const imageUrls = [
+        "https://via.placeholder.com/300?text=Image1",
+        "https://via.placeholder.com/300?text=Image2",
+        "https://via.placeholder.com/300?text=Image3",
+        "https://via.placeholder.com/300?text=Image4",
+        "https://via.placeholder.com/300?text=Image5"
+    ];
+    
+    const gallery = document.getElementById("gallery");
+    const fullscreenView = document.getElementById("fullscreen-view");
+    const fullscreenImg = document.getElementById("fullscreen-img");
+
+    // Generate the grid dynamically
+    imageUrls.forEach(url => {
+        const imgElement = document.createElement("img");
+        imgElement.src = url;
+        imgElement.alt = "Image";
+        
+        const div = document.createElement("div");
+        div.classList.add("grid-item");
+        div.appendChild(imgElement);
+        
+        div.addEventListener("click", () => {
+            fullscreenImg.src = url;
+            fullscreenView.style.display = "flex";
+        });
+
+        gallery.appendChild(div);
+    });
+
+    // Click to close fullscreen
+    fullscreenView.addEventListener("click", () => {
+        fullscreenView.style.display = "none";
+    });
+</script>
+
+</body>
+</html>
