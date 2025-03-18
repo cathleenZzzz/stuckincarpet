@@ -13,7 +13,7 @@
             background-color: black;
         }
 
-        /* ✅ 1. Perfect Grid Layout (No gaps, No spacing, No border-radius) */
+        /* ✅ Perfect Grid Layout */
         .grid-container {
             display: grid;
             grid-template-columns: repeat(64, 1fr); /* Auto-updated dynamically */
@@ -27,18 +27,24 @@
             cursor: pointer;
             width: 100%;
             height: 100%;
+            transition: transform 0.2s ease-in-out; /* ✅ Added hover effect */
         }
 
-        /* ✅ 2. No rounded corners, No spacing */
+        /* ✅ Slightly Enlarge on Hover */
+        .grid-item:hover {
+            transform: scale(1.1);
+        }
+
+        /* ✅ No Rounded Corners, No Spacing */
         .grid-item img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Keeps aspect ratio, fills space */
+            object-fit: cover; /* Ensures images fit properly */
             margin: 0;
             padding: 0;
         }
 
-        /* ✅ 3. Fullscreen Image Viewer */
+        /* ✅ Fullscreen Image Viewer */
         .fullscreen {
             position: fixed;
             top: 0;
@@ -118,4 +124,5 @@
 
 </body>
 </html>
+
 
